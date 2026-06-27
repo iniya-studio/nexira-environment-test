@@ -25,6 +25,14 @@ jobs:
         with:
           channel: 'stable'
 
+      - name: List repository structure
+        run: |
+          echo "=== Repository Root ==="
+          ls -la
+          echo ""
+          echo "=== Checking for Flutter project ==="
+          find . -name "pubspec.yaml" -type f 2>/dev/null | head -20
+
       - name: Verify Flutter installation
         run: flutter --version
 
@@ -37,10 +45,12 @@ jobs:
       - name: Verify APK exists
         run: |
           if [ -f "build/app/outputs/flutter-apk/app-release.apk" ]; then
-            echo "APK built successfully!"
+            echo "✓ APK built successfully!"
             ls -lh build/app/outputs/flutter-apk/app-release.apk
           else
-            echo "APK not found!"
+            echo "✗ APK not found!"
+            echo "Contents of build directory:"
+            find build -type f 2>/dev/null | head -20
             exit 1
           fi
 
